@@ -6,23 +6,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 
-class HttpServer {
-    public static JSONObject readRequestBody(BufferedReader in) throws IOException {
-        StringBuilder body = new StringBuilder();
+class LibraryServer {
+    public static JSONObject parseRequestBody(BufferedReader reader) throws IOException {
+        StringBuilder requestBody = new StringBuilder();
         String line;
-        while ((line = in.readLine()) != null && !line.isEmpty()) {
-            body.append(line);
+        while ((line = reader.readLine()) != null && !line.isEmpty()) {
+            requestBody.append(line);
         }
-        System.out.println(body.toString());
-        return new JSONObject(body.toString());
+        System.out.println("Request Body: " + requestBody.toString());
+        return new JSONObject(requestBody.toString());
     }
-    public static void sendResponse(OutputStream out, int statusCode, String body) throws IOException {
-        String response = "HTTP/1.1 " + statusCode + " OK\r\n"
+
+    public static void sendHttpResponse(OutputStream outputStream, int statusCode, String responseBody) throws IOException {
+        String httpResponse = "HTTP/1.1 " + statusCode + " OK\r\n"
                 + "Content-Type: application/json\r\n"
-                + "Content-Length: " + body.length() + "\r\n"
+                + "Content-Length: " + responseBody.length() + "\r\n"
                 + "\r\n"
-                + body;
-        out.write(response.getBytes());
-        out.flush();
+                + responseBody;
+        outputStream.write(httpResponse.getBytes());
+        outputStream.flush();
     }
 }

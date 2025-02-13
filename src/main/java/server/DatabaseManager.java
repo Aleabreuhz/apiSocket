@@ -5,12 +5,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 class DatabaseManager {
-    private static Connection connection;
+    private static Connection dbConnection;
 
     public static Connection getConnection() throws SQLException {
-        if (connection == null) {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "S@nFrancisco");
+        if (dbConnection == null) {
+            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library_db", "root", "S@nFrancisco");
         }
-        return connection;
+        return dbConnection;
     }
 }
